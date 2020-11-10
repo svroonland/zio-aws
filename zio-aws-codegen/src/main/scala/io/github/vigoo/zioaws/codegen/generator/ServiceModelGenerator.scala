@@ -378,6 +378,7 @@ trait ServiceModelGenerator {
                         }
                       }""",
         q"""object ${m.asTerm} {
+                            implicit val decoder: JsonDecoder[${m.asType}] = DeriveJsonDecoder.gen[${m.asType}]
                             private lazy val zioAwsBuilderHelper: io.github.vigoo.zioaws.core.BuilderHelper[$awsShapeNameT] = io.github.vigoo.zioaws.core.BuilderHelper.apply
                             trait $roT {
                               def editable: ${m.asType} = ${m.asTerm}(..${fields
@@ -459,6 +460,7 @@ trait ServiceModelGenerator {
             }
          """,
         q"""object ${m.asTerm} {
+              implicit val decoder: JsonDecoder[${m.asType}] = DeriveJsonDecoder.gen[${m.asType}]
               def wrap(value: $awsShapeNameT): ${m.asType} =
                 $wrapPatterns
 
@@ -512,6 +514,14 @@ trait ServiceModelGenerator {
                   import java.time.Instant
                   import zio.{Chunk, ZIO}
                   import software.amazon.awssdk.core.SdkBytes
+                  import zio.json._
+                  import JsonDecoder._
+                  import EncoderUtil._
+
+                  object EncoderUtil {
+                    implicit def iterable[A: JsonDecoder]: JsonDecoder[Iterable[A]] =
+                      JsonDecoder.list[A].map(_.toIterable)
+                  }
 
                   ..$parentModuleImport
 

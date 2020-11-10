@@ -15,12 +15,14 @@ lazy val root = Project("zio-aws", file(".")).settings(
 
 lazy val core = Project("zio-aws-core", file("zio-aws-core"))
   .settings(
+    resolvers += Resolver.sonatypeRepo("snapshots"),
     libraryDependencies ++= Seq(
       "software.amazon.awssdk" % "aws-core" % awsVersion,
       "dev.zio" %% "zio" % zioVersion,
       "dev.zio" %% "zio-streams" % zioVersion,
       "dev.zio" %% "zio-interop-reactivestreams" % zioReactiveStreamsInteropVersion,
       "dev.zio" %% "zio-config" % zioConfigVersion,
+      "dev.zio" %% "zio-json" % "0.0.0+70-cb7ff4b9-SNAPSHOT",
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.2.0",
       "dev.zio" %% "zio-test" % zioVersion % "test",
       "dev.zio" %% "zio-test-sbt" % zioVersion % "test",

@@ -18,6 +18,8 @@ object TypeMapping {
       case "timestamp"                                     => true
       case "blob"                                          => true
       case "bigdecimal"                                    => true
+      case "map" => true
+      case "list" => true
       case _                                               => false
     }
 
